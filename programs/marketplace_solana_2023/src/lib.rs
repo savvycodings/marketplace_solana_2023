@@ -1,38 +1,39 @@
+mod contexts;
+use contexts::*;
+
+mod errors;
+mod helpers;
+mod state;
+
 use anchor_lang::prelude::*;
 
 declare_id!("4pnzxTjn7VxS2fBj3H3ESzxrRhrAdzu79TwQ73LnxgW6");
 
 #[program]
-pub mod marketplace_solana_2023 {
+pub mod anchor_marketplace {
+
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>, _name: String) -> Result<()> {
-        Ok(())
+    pub fn initialize(ctx: Context<Initialize>, name: String, fee: u16) -> Result<()> {
+        ctx.accounts.init(&ctx.bumps, name, fee)
     }
-}
 
-#[derive(Accounts)]
-pub struct Initialize<'info> {
-    #[account(mut)]
-    admin: Signer<'info>,
-}
+    pub fn whitelist_collection(ctx: Context<WhitelistCollection>) -> Result<()> {
+        ctx.accounts.whitelist(&ctx.bumps)
+    }
 
-#[account]
-pub struct Marketplace {
-    admin: Pubkey,
-    fee: u16,
-}
+    pub fn list(ctx: Context<List>, price: u64) -> Result<()> {
+        ctx.accounts.create_listing(&ctx.bumps, price)?;
+        ctx.accounts.deposit_nft()
+    }
 
-#[account]
-pub struct Collection {
-    name: String,
-    fee: u16,
-}
+    pub fn delist(ctx: Context<Delist>) -> Result<()> {
+        ctx.accounts.withdraw_nft()
+    }
 
-#[account]
-pub struct Listing {
-    owner: Pubkey,
-    mint: Pubkey,
-    price: u64,
-    exp: u64,
+    pub fn purchase(ctx: Context<Purchase>) -> Result<()> {
+        ctx.accounts.send_sol()?;
+        ctx.accounts.send_nft()?;
+        ctx.accounts.close_mint_ata()
+    }
 }

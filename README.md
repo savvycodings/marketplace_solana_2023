@@ -1,6 +1,10 @@
 # Solana Marketplace Program
 
-The provided code represents a robust Solana program that powers a decentralized NFT marketplace. Leveraging the capabilities of Solana's blockchain infrastructure, this program facilitates secure and transparent NFT trading within the Solana network. Below, you'll find an overview of the program's core instructions.
+The provided code represents a robust Solana program that powers a decentralised NFT marketplace. Leveraging the capabilities of Solana's blockchain infrastructure, this program facilitates secure and transparent NFT trading within the Solana network. Below, you'll find an overview of the program's core instructions.
+
+The process begins with the initialization of a new marketplace. We then enable the whitelisting of NFT assets based on their collection ID, allowing users to list NFTs from these collections using the 'create_listing' and 'deposit_nft' instructions. If a user wishes to cancel their listing, they can utilize the 'withdraw_nft' instruction, followed by 'close_vault' to retrieve their funds from the opened vault.
+
+When a user purchases an NFT, we execute multiple actions. We send SOL tokens to the NFT maker and deposit fees into the treasury account. Simultaneously, we transfer the NFT to the buyer, mint rewards tokens for the buyer, and eventually close the vault. This comprehensive process ensures a secure and transparent NFT trading experience on the Solana network.
 
 ## Table of Contents
 
